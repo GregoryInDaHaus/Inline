@@ -1,6 +1,11 @@
 <?php
 include "../lib/PDOAdapter.php";
 include "../lib/MyLogger.php";
+
+/**
+ * AgesTable - класс работы с таблицей Person
+ * @package controller
+ */
 class AgesTable
 {
     /**
@@ -12,8 +17,8 @@ class AgesTable
     
     /**
      * @uses PDOAdapter()
-     * @uses MyLogger() 
-     *  присваивает @see adapter объект класса @uses PDOAdapter()
+     * @uses MyLogger()
+     * @method присваивает @see adapter объект класса PDOAdapter()
      */
     function __construct(){
         $dsn = 'mysql:host=localhost;dbname=inline';
@@ -32,7 +37,7 @@ class AgesTable
         $sth = $this->adapter->prepare($sql);
         $result = $this->adapter->selectPrepared($sth);
         return $result;
-    }
+    } 
 
     /**
      * Метод выбирает максимальный возраст из таблицы inline.person
@@ -45,13 +50,13 @@ class AgesTable
         return $result;
     }
 
-    /**
+    /** 
      * Метод находит в БД персону, у которой знавение в столбце 
      * mother_id не задан и возраст меньше максимального
      * Изменяет у найденной персоны возраст на максимальный.
      * @return int 1 при успешном выполнении запроса в БД
      */
-    public function updateOne(){
+    public function UpdateOne(){
         $sql = file_get_contents('../model/update_one.sql');
         $sth = $this->adapter->prepare($sql);
         $result = $this->adapter->executePrepared($sth);
@@ -70,9 +75,13 @@ class AgesTable
     }
 }
 
+/**
+ * $_POST запрос с строковым элементом "request_from_client" вызывет функцию @see maxAgeList()
+ */
 if( isset($_POST['agelist']) ){
-    $agesTable = new AgesTable;
-    $result = $agesTable->maxAgeList();
-
-    echo json_encode($result);
+    if($_POST['agelist'] == "request_from_client"){
+        $agesTable = new AgesTable;
+        $result = $agesTable->maxAgeList();
+        echo json_encode($result);
+    }
 }
