@@ -22,7 +22,7 @@ class AgesTable
      */
     function __construct(){
         $dsn = 'mysql:host=localhost;dbname=inline';
-        $username = 'root'; 
+        $username = 'root';
         $password = '';
         $errorLogger = new MyLogger('../logs/log_file.txt');
         $this->adapter = new PDOAdapter($dsn, $username, $password, $errorLogger);
@@ -76,12 +76,21 @@ class AgesTable
 }
 
 /**
- * $_POST запрос с строковым элементом "request_from_client" вызывет функцию @see maxAgeList()
+ * $_POST запрос с строковым элементом "request_from_client" вызывет функцию
+ * в соостветсквии с роутом
  */
 if( isset($_POST['agelist']) ){
-    if($_POST['agelist'] == "request_from_client"){
-        $agesTable = new AgesTable;
-        $result = $agesTable->maxAgeList();
-        echo json_encode($result);
-    }
+    $client_request = $_POST['agelist'];
+    $routes = require '../config/routes.php';
+
+    $route = $routes[$client_request];
+    
+    $controller_class = $route['controller_class'];
+    $controller = new $controller_class;
+    
+    $action = $route['action'];
+    $result = $controller->$action();
+    
+    echo json_encode($result);
 }
+
