@@ -21,7 +21,7 @@ class AgesTable
      * @method присваивает @see adapter объект класса PDOAdapter()
      */
     function __construct(){
-        $dsn = 'mysql:host=localhost;dbname=inline';
+        $dsn = 'mysql:host=localhost:3306;dbname=inline';
         $username = 'root';
         $password = '';
         $errorLogger = new MyLogger('../logs/log_file.txt');
