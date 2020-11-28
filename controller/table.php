@@ -22,7 +22,7 @@ class AgesTable
      */
     function __construct(){
         $dsn = 'mysql:host=127.0.0.1:3306;dbname=inline';
-        $username = 'root';
+        $username = 'inline';
         $password = '';
         $errorLogger = new MyLogger('../logs/log_file.txt');
         $this->adapter = new PDOAdapter($dsn, $username, $password, $errorLogger);
